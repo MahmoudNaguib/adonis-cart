@@ -1,0 +1,15 @@
+@layout('main')
+
+@section('content')
+  <h3>Confirm account</h3>
+  @if(row.id)
+  <h5>Welcome {{row.name}}</h5>
+  <div class="alert alert-success" role="alert">
+      Your account has been confirmed!
+  </div>
+  @else
+  <div class="alert alert-danger" role="alert">
+    Invalid confirm token
+  </div>
+  @endif
+@endsection

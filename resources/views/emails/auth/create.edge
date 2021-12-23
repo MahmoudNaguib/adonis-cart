@@ -1,0 +1,30 @@
+@include('emails/partials/header')
+
+<h2>Welcome to {{appName}} </h2>
+
+<h4> Hello {{ row.name }} </h2>
+<p>
+  Thanks for registration to our website
+</p>
+<p>
+  Here is your account details
+</p>
+<p>
+  <strong>Name : </strong> {{row.name}}
+</p>
+
+<p>
+  <strong>Email : </strong> {{row.email}}
+</p>
+
+
+@if(row.confirmed==0)
+<p>
+   To activate your account please click
+   <a href='{{baseUrl}}/auth/confirm/{{row.confirm_token}}'>
+   Here
+   </a>
+</p>
+@endif
+
+@include('emails/partials/footer')
