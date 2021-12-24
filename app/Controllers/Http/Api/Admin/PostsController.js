@@ -1,23 +1,27 @@
 'use strict'
-const Model = use('App/Models/Post');
-const Transformer = "PostTransformer";
+const Hash = use('Hash');
 const Env = use('Env');
+const Common = use('App/Helpers/Common');
+const Transformers = use('App/Helpers/Transformers');
+/////////////////////////////////////////////////
+const Resource = 'PostResource';
+const Model = use('App/Models/Post');
 const ResizeImage = use('App/Helpers/ResizeImage');
 
 class PostsController {
-  async index({request, response, transform}) {
+  async index({request, response}) {
     let page = (request.input('page')) ? request.input('page') : 1;
     let rows = await Model.query().relations().filter(request.all()).sort(request.all()).paginate(page, Env.get('PER_PAGE'));
-    return transform.paginate(rows, Transformer);
+    return Transformers.paginate(rows, Resource);
   }
 
-  async show({params, request, response, transform}) {
+  async show({params, request, response}) {
     let row = await Model.query().relations().where('id', params.id).first();
     if (!row) {
       return response.status(404).json({'message': 'Page not found'})
     }
     return response.json({
-      data: await transform.item(row, Transformer)
+      data: Transformers.resource(row,Resource)
     })
   }
 
@@ -30,7 +34,7 @@ class PostsController {
     }
   }
 
-  async store({request, response, transform, auth}) {
+  async store({request, response, auth}) {
     let data = request.only([
       'section_id',
       'title',
@@ -39,7 +43,8 @@ class PostsController {
       'meta_keywords',
       'meta_description',
       'is_active'
-    ]);    /////// Save image
+    ]);
+    /////// Save image
     if (request.file('image', {types: ['image'], size: '4mb'})) {
       let image = await ResizeImage.resize(request.file('image').tmpPath,
         {small: '200x100', large: '400x200'});
@@ -53,13 +58,13 @@ class PostsController {
     if (row) {
       return response.status(201).json({
         message: "Created successfully",
-        data: await transform.item(row, Transformer)
+        data: Transformers.resource(row,Resource)
       })
     }
     return response.status(400).json({message: "Failed to save"});
   }
 
-  async update({params, request, response, transform}) {
+  async update({params, request, response}) {
     let row = await Model.findOrFail(params.id);
     let data = request.only([
       'section_id',
@@ -82,7 +87,7 @@ class PostsController {
     if (await row.save()) {
       return response.json({
         message: "Update successfully",
-        data: await transform.item(await Model.find(row.id), Transformer)
+        data: Transformers.resource(row,Resource)
       })
     }
     return response.status(400).json({message: "Failed to save"});

@@ -26,7 +26,7 @@ class OrderResource {
         updated_at: dateFormat(new Date(this.model.updated_at), "yyyy-mm-dd hh:MM:ss tt"),
       },
       relationships: {
-        creator: Transformers.resource(this.model.creator, 'UserTinyResource'),
+        creator: Transformers.resource(this.model.hasOwnProperty('creator') ? this.model.creator : {}, 'UserTinyResource'),
       },
     };
   }

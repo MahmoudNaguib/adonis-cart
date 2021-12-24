@@ -7,7 +7,7 @@ class AuthRegister {
       name: 'required|min:4',
       email: 'required|email|unique:users,email',
       mobile: 'required|number',
-      password: 'required|min:6|confirmed',
+      password: 'required|min:8|confirmed',
     }
   }
 

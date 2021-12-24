@@ -61,7 +61,17 @@ class AuthController {
     if (!row) {
       return response.status(403).json({'message': 'Invalid email'})
     }
-    let newPassword = (Env.get('APP_ENV') == 'production') ? Common.generateString(8) : Env.get('DEFAULT_PASSWORD');
+    row.password_token = Common.generateString(128);
+    if(row.save()){
+      ///////////////Send email
+      ForgotPassword.handle(row);
+      ///////////////
+      return response.json({
+        message: "Your new password has been sent",
+      })
+    }
+
+    /*let newPassword = (Env.get('APP_ENV') == 'production') ? Common.generateString(8) : Env.get('DEFAULT_PASSWORD');
     row.password = newPassword;
     if (row.save()) {
       ///delete all token related to this user
@@ -72,7 +82,7 @@ class AuthController {
       return response.json({
         message: "Your new password has been sent",
       })
-    }
+    }*/
     return response.status(400).json({message: "Failed to save"});
   }
 }

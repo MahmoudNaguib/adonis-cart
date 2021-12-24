@@ -16,7 +16,7 @@ class CategoriesController {
   }
 
   async show({params, request, response}) {
-    let row = await Model.query().where('id', params.id).first();
+    let row = await Model.query().relations().where('id', params.id).first();
     if (!row) {
       return response.status(404).json({'message': 'Page not found'})
     }

@@ -20,7 +20,7 @@ class CommentsController {
       return response.status(404).json({'message': 'Page not found'})
     }
     return response.json({
-      data: Transformers.resource(row,Resource)
+      data: Transformers.resource(row, Resource)
     })
   }
 
@@ -33,20 +33,18 @@ class CommentsController {
     }
   }
 
-  async update({params, request, response, transform}) {
+  async update({params, request, response}) {
     let row = await Model.findOrFail(params.id);
-    let data = request.only(['post_id', 'content', 'is_active']);
+    let data = request.only(['is_active']);
     row.merge(data);
     if (await row.save()) {
       return response.json({
         message: "Update successfully",
-        data: Transformers.resource(row,Resource)
+        data: Transformers.resource(row, Resource)
       })
     }
     return response.status(400).json({message: "Failed to save"});
   }
-
-
 }
 
 module.exports = CommentsController

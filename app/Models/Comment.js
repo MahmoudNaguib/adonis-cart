@@ -17,7 +17,7 @@ class Comment extends Model {
   }
 
   static scopeRelations(query) {
-    return query.with('creator')
+    return query.with('creator').with('post')
   }
 
   static scopeActive(query) {

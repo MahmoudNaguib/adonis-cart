@@ -27,7 +27,7 @@ class ProfileController {
     }
   }
 
-  async update({request, response, auth, transform}) {
+  async update({request, response, auth}) {
     let row = await Model.findOrFail(auth.user.id);
     let data = request.only(['name', 'email', 'mobile']);
     /////// Save image

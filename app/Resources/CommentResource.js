@@ -22,7 +22,8 @@ class CommentResource {
         updated_at: dateFormat(new Date(this.model.updated_at), "yyyy-mm-dd hh:MM:ss tt"),
       },
       relationships: {
-        creator: Transformers.resource(this.model.hasOwnProperty('creator') ? this.model.creator : null, 'UserTinyResource'),
+        creator: Transformers.resource(this.model.hasOwnProperty('creator') ? this.model.creator : {}, 'UserTinyResource'),
+        post: Transformers.resource(this.model.hasOwnProperty('post') ? this.model.post : {}, 'PostTinyResource'),
       },
     };
   }

@@ -7,8 +7,8 @@ class MyProvider extends ServiceProvider {
 
   async boot () {
     const Database = use('Database');
-    const Model = use('App/Models/Config');
-    let rows = await Model.all();
+  /*  const Model = use('App/Models/Config');
+    let rows = await Model.all();*/
     const View = this.app.use('Adonis/Src/View');
     const Env = use('Env');
 

@@ -21,7 +21,7 @@ class FavouriteResource {
         updated_at: dateFormat(new Date(this.model.updated_at), "yyyy-mm-dd hh:MM:ss tt"),
       },
       relationships: {
-        product: Transformers.resource(this.model.product, 'ProductTinyResource'),
+        product: Transformers.resource(this.model.hasOwnProperty('product') ? this.model.product : {}, 'ProductTinyResource'),
       },
     };
   }

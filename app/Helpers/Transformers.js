@@ -19,7 +19,10 @@ class Transformers {
     let items={};
     if(rows!=null){
       if(Array.isArray(rows)){
-        items['data'] = rows.map(function (row) {
+        if(rows.length==0){
+          return [];
+        }
+        items = rows.map(function (row) {
           return new Transformer(row).toArray();
         })
       }

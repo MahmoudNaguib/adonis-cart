@@ -27,8 +27,8 @@ class ProductResource {
         updated_at: dateFormat(new Date(this.model.updated_at), "yyyy-mm-dd hh:MM:ss tt"),
       },
       relationships: {
-        creator: Transformers.resource(this.model.creator, 'UserTinyResource'),
-        category: Transformers.resource(this.model.category, 'CategoryTinyResource'),
+        creator: Transformers.resource(this.model.hasOwnProperty('creator') ? this.model.creator : {}, 'UserTinyResource'),
+        category: Transformers.resource(this.model.hasOwnProperty('category') ? this.model.category : {}, 'CategoryTinyResource'),
       },
     };
   }

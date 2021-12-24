@@ -19,6 +19,8 @@ const Route = use('Route')
 Route.get('/', 'HomeController.index')
 Route.get('/contact', 'ContactController.index')
 Route.get('auth/confirm/:token', 'AuthController.confirm');
+Route.get('auth/change-password/:token', 'AuthController.getChangePassword');
+Route.post('auth/change-password/:token', 'AuthController.postChangePassword');
 
 /*
 Route.get('auth/reset-password', 'AuthController.resetPassword');

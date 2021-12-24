@@ -1,23 +1,27 @@
 'use strict'
-const Model = use('App/Models/Section');
-const Transformer = "SectionTransformer";
+const Hash = use('Hash');
 const Env = use('Env');
+const Common = use('App/Helpers/Common');
+const Transformers = use('App/Helpers/Transformers');
+/////////////////////////////////////////////////
+const Resource = 'SectionResource';
+const Model = use('App/Models/Section');
 const ResizeImage = use('App/Helpers/ResizeImage');
 
 class SectionsController {
-  async index({request, response, transform}) {
+  async index({request, response}) {
     let page = (request.input('page')) ? request.input('page') : 1;
     let rows = await Model.query().sort(request.all()).paginate(page, Env.get('PER_PAGE'));
-    return transform.paginate(rows, Transformer);
+    return Transformers.paginate(rows, Resource);
   }
 
-  async show({params, request, response, transform}) {
+  async show({params, request, response}) {
     let row = await Model.query().where('id', params.id).first();
     if (!row) {
       return response.status(404).json({'message': 'Page not found'})
     }
     return response.json({
-      data: await transform.item(row, Transformer)
+      data: Transformers.resource(row,Resource)
     })
   }
 
@@ -30,7 +34,7 @@ class SectionsController {
     }
   }
 
-  async store({request, response, transform, auth}) {
+  async store({request, response, auth}) {
     let data = request.only([
       'title',
       'is_active'
@@ -49,13 +53,13 @@ class SectionsController {
     if (row) {
       return response.status(201).json({
         message: "Created successfully",
-        data: await transform.item(row, Transformer)
-      })
+        data: Transformers.resource(await Model.find(row.id),Resource)
+      });
     }
     return response.status(400).json({message: "Failed to save"});
   }
 
-  async update({params, request, response, transform}) {
+  async update({params, request, response}) {
     let row = await Model.findOrFail(params.id);
     let data = request.only([
       'title',
@@ -73,11 +77,11 @@ class SectionsController {
     if (await row.save()) {
       return response.json({
         message: "Update successfully",
-        data: await transform.item(await Model.find(row.id), Transformer)
-      })
+        data: Transformers.resource(row,Resource)
+      });
     }
     return response.status(400).json({message: "Failed to save"});
   }
 }
 
-module.exports = SectionsController
+module.exports = SectionsController;

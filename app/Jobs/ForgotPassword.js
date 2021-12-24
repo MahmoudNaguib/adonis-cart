@@ -5,11 +5,11 @@ const Logger = use('Logger')
 const Common = use('App/Helpers/Common');
 
 class ForgotPassword {
-  static async handle(row, newPassword) {
+  static async handle(row) {
     if (Env.get('APP_ENV') != 'testing') {
       try {
         await Mail.send('emails.auth.forgot-password',
-          {url: Env.get('APP_URL'), row, 'password': newPassword}, (message) => {
+          {url: Env.get('APP_URL'), row}, (message) => {
             message.from(Env.get('MAIL_FROM_ADDRESS'))
             message.to(row.email)
             message.subject(Env.get('APP_NAME') + ' - Forgot password')

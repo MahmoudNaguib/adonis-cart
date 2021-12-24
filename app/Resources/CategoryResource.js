@@ -22,7 +22,7 @@ class CategoryResource {
         updated_at: dateFormat(new Date(this.model.updated_at), "yyyy-mm-dd hh:MM:ss tt"),
       },
       relationships: {
-        children: Transformers.collection(this.model.hasOwnProperty('children') ? this.model.children : null, 'CategoryTinyResource'),
+        children: Transformers.collection(this.model.hasOwnProperty('children') ? this.model.children : [], 'CategoryResource'),
       },
     };
   }
