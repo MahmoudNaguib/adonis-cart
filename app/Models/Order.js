@@ -17,7 +17,7 @@ class Order extends Model {
   }
 
   setProducts(products) {
-    if (products.isArray) {
+    if (products) {
       return JSON.stringify(products);
     }
   }

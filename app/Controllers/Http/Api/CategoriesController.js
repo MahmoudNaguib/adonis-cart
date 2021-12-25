@@ -10,7 +10,7 @@ const Resource='CategoryResource';
 class CategoriesController {
   async index({request, response}) {
     let page = (request.input('page')) ? request.input('page') : 1;
-    let rows = await Model.query().relations().where('parent_id', null).active().paginate(page, Env.get('PER_PAGE'));
+    let rows = await Model.query().relations().where('parent_id', null).active().sort(request.all()).paginate(page, Env.get('PER_PAGE'));
     return Transformers.paginate(rows, Resource);
   }
 
@@ -31,6 +31,8 @@ class CategoriesController {
     for (let i = 0; i < rows.length; i++) {
       let row = {
         'key': rows[i].title,
+        'id':rows[i].id,
+        'image':rows[i].image,
         'children': rows[i].children
       }
       output.push(row);

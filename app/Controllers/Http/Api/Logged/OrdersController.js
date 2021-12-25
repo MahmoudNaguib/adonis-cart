@@ -4,14 +4,14 @@ const Env = use('Env');
 const Common = use('App/Helpers/Common');
 const Transformers = use('App/Helpers/Transformers');
 /////////////////////////////////////////////////
-const Resource = 'FavouriteResource';
-const Model = use('App/Models/Favourite')
+const Resource = 'OrderResource';
+const Model = use('App/Models/Order');
 
 
-class FavouritesController {
+class OrdersController {
   async index({request, response, auth}) {
     let page = (request.input('page')) ? request.input('page') : 1;
-    let rows = await Model.query().relations().own(auth).sort(request.all()).paginate(page, Env.get('PER_PAGE'));
+    let rows = await Model.query().own(auth).relations().sort(request.all()).paginate(page, Env.get('PER_PAGE'));
     return Transformers.paginate(rows, Resource);
   }
 
@@ -24,6 +24,9 @@ class FavouritesController {
       data: Transformers.resource(row, Resource)
     })
   }
+  async store({params, request, response, auth}) {
+    return "Create Order";
+  }
 }
 
-module.exports = FavouritesController
+module.exports = OrdersController

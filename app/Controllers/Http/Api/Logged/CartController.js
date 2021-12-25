@@ -9,6 +9,7 @@ const Resource='CartResource';
 
 class CartController {
   async index({request, response, auth}) {
+    let page = (request.input('page')) ? request.input('page') : 1
     let rows = await Model.query().relations().own(auth).sort(request.all()).paginate(page, Env.get('PER_PAGE'));
     return Transformers.paginate(rows,Resource);
   }

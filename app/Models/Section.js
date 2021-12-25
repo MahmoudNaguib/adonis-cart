@@ -20,10 +20,11 @@ class Section extends Model {
     return query.where('is_active', 1)
   }
 
-  static scopeSort(query, request) {
-    if (request.order_field != '' && request.order_field != undefined && request.order_value != '' && request.order_value != undefined) {
-      return query.orderBy(request.order_field, request.order_value)
-    } else {
+  static scopeSort(query,request) {
+    if(request.order_field!='' && request.order_field!=undefined && request.order_value!='' && request.order_value!=undefined){
+      return query.orderBy(request.order_field,request.order_value)
+    }
+    else{
       return query.orderBy('id', 'desc');
     }
   }

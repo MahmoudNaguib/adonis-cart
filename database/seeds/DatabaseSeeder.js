@@ -1,11 +1,9 @@
 'use strict';
 
-const Configs = use('./ConfigsSeeder');
 const Users = use('./UsersSeeder');
 const Sections = use('./SectionsSeeder');
 const Posts = use('./PostsSeeder');
 const Comments = use('./CommentsSeeder');
-
 
 const Messages = use('./MessagesSeeder');
 const Countries = use('./CountriesSeeder');
@@ -19,7 +17,6 @@ const Orders = use('./OrdersSeeder');
 
 class DatabaseSeeder {
   async run() {
-    await new Configs().run();
     await new Users().run();
     await new Sections().run();
     await new Posts().run();

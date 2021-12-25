@@ -140,7 +140,6 @@ Factory.blueprint('App/Models/Message', async (faker,i,data) => {
 Factory.blueprint('App/Models/Country', async (faker,i,data) => {
   return {
     iso: faker.string({ length: 2 }),
-    dial_code:'+'+faker.integer({ min: 10, max: 99 }),
     title: faker.string({ length: 8 }),
     is_active: 1,
   }

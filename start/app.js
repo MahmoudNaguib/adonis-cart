@@ -24,6 +24,7 @@ const providers = [
   'adonis-bumblebee/providers/CommandsProvider',
   '@adonisjs/mail/providers/MailProvider',
   '@adonisjs/drive/providers/DriveProvider',
+  '@adonisjs/session/providers/SessionProvider',
   __dirname+'/../app/Providers/MyProvider'
 ]
 

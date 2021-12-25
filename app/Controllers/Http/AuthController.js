@@ -1,7 +1,9 @@
 'use strict'
-const Model = use('App/Models/User');
+const Hash = use('Hash');
+const Env = use('Env');
 const Common = use('App/Helpers/Common');
-const {validate} = use('Validator')
+/////////////////////////////////////////////////
+const Model = use('App/Models/User');
 
 class AuthController {
   async confirm({params, request, response, view}) {
@@ -19,23 +21,22 @@ class AuthController {
     return view.render('auth.change-password', {row})
   }
 
-  async postChangePassword({params, request, session, response, view}) {
-    const rules = {
-      old_password: 'required|min:8',
-      password: 'required|min:8|confirmed',
-    }
-    const validation = await validate(request.all(), rules)
-    if (validation.fails()) {
-      const errors=Common.validationMessages(validation.messages());
-      return errors;
-      session
-        .withErrors(validation.messages())
-        .flashExcept(['password'])
-
-      return response.redirect('back')
-    }
+  async postChangePassword({params, request, session, auth, response, view}) {
     let row = await Model.query().where('password_token', params.token).first();
-    return row.name;
+    if (!await Hash.verify(request.input('old_password'), row.password)) {
+      session
+        .withErrors([{field: 'old_password', message: 'Invalid old password'}])
+        .flashAll()
+      return response.redirect('back');
+    }
+    await auth.revokeTokensForUser(row, null, true);
+    await auth.generate(row);
+    row.password = request.input('password');
+    row.password_token=null;
+    if (row.save()) {
+      session.flash({ message: 'Password has been changed' , type:'success'})
+      return response.redirect('/');
+    }
     return view.render('auth.change-password', {row})
   }
 

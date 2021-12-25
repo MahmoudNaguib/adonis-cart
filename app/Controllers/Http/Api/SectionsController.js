@@ -10,7 +10,7 @@ const Model = use('App/Models/Section');
 class SectionsController {
   async index({request, response}) {
     let page = (request.input('page')) ? request.input('page') : 1;
-    let rows = await Model.query().active().paginate(page, Env.get('PER_PAGE'));
+    let rows = await Model.query().active().sort(request.all()).paginate(page, Env.get('PER_PAGE'));
     return Transformers.paginate(rows, Resource);
   }
 
@@ -24,7 +24,7 @@ class SectionsController {
     })
   }
 
-  async pairs({response}) {
+  async pairs({response, request}) {
     let rows = await Model.query().active().pair('id', 'title')
     return response.json({
       'data': rows

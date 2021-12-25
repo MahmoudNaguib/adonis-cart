@@ -20,7 +20,8 @@ Route.get('/', 'HomeController.index')
 Route.get('/contact', 'ContactController.index')
 Route.get('auth/confirm/:token', 'AuthController.confirm');
 Route.get('auth/change-password/:token', 'AuthController.getChangePassword');
-Route.post('auth/change-password/:token', 'AuthController.postChangePassword');
+Route.post('auth/change-password/:token', 'AuthController.postChangePassword')
+  .validator('Auth/ChangePassword');
 
 /*
 Route.get('auth/reset-password', 'AuthController.resetPassword');
@@ -35,16 +36,10 @@ Route.group(() => {
     .validator('Auth/AuthForgotPassword');
   ////////////////////////////////
 }).middleware(['guest']).prefix('api');
+
+
 Route.group(() => {
-    //////////////////////////////// Profile
-    Route.get('profile', 'Api/ProfileController.index');
-    Route.get('profile/logout', 'Api/ProfileController.logout');
-    Route.put('profile', 'Api/ProfileController.update')
-      .validator('Profile/ProfileUpdate');
-    //////////////////////////////// Notifications
-    Route.get('notifications', 'Api/NotificationsController.index');
-    Route.get('notifications/:id', 'Api/NotificationsController.show');
-    //////////////////////////////////
+    Route.get('configs', 'Api/ConfigsController.index');
     //////////////////////////////// Sections
     Route.get('sections', 'Api/SectionsController.index');
     Route.get('sections/pairs', 'Api/SectionsController.pairs');
@@ -54,8 +49,6 @@ Route.group(() => {
     Route.get('posts', 'Api/PostsController.index');
     Route.get('posts/:id', 'Api/PostsController.show');
     Route.get('posts/:id/comments', 'Api/CommentsController.index');
-    Route.post('posts/:id/comments', 'Api/CommentsController.store')
-      .validator('Comments/Create');
     /////////////////////////////////
     //////////////////////////////// Categories
     Route.get('categories', 'Api/CategoriesController.index');
@@ -66,18 +59,49 @@ Route.group(() => {
     Route.get('products', 'Api/ProductsController.index');
     Route.get('products/:id', 'Api/ProductsController.show');
     //////////////////////////////////
+  }
+).prefix('api');
+
+
+Route.group(() => {
+    //////////////////////////////// Profile
+    Route.get('profile', 'Api/Logged/ProfileController.index');
+    Route.get('profile/logout', 'Api/Logged/ProfileController.logout');
+    Route.put('profile', 'Api/Logged/ProfileController.update')
+      .validator('Profile/ProfileUpdate');
+    Route.put('change-password', 'Api/Logged/ProfileController.changePassword')
+      .validator('Profile/ChangePassword');
+    //////////////////////////////// Notifications
+    Route.get('notifications', 'Api/Logged/NotificationsController.index');
+    Route.get('notifications/:id', 'Api/Logged/NotificationsController.show');
+    //////////////////////////////////
     //////////////////////////////// Cart
-    Route.get('cart', 'Api/CartController.index');
-    Route.get('cart/:id', 'Api/CartController.show');
+    Route.get('addresses', 'Api/Logged/AddressesController.index');
+    Route.get('addresses/pairs', 'Api/Logged/AddressesController.pairs');
+    Route.get('addresses/:id', 'Api/Logged/AddressesController.show');
+    Route.post('addresses', 'Api/Logged/AddressesController.store')
+      .validator('Addresses/Create');
+    Route.put('addresses/:id', 'Api/Logged/AddressesController.update')
+      .validator('Addresses/Edit');
+    //////////////////////////////////
+    //////////////////////////////// Cart
+    Route.get('cart', 'Api/Logged/CartController.index');
+    Route.get('cart/:id', 'Api/Logged/CartController.show');
     //////////////////////////////////
     //////////////////////////////// Favourites
-    Route.get('favourites', 'Api/FavouritesController.index');
-    Route.get('favourites/:id', 'Api/FavouritesController.show');
+    Route.get('favourites', 'Api/Logged/FavouritesController.index');
+    Route.get('favourites/pairs', 'Api/Logged/FavouritesController.pairs');
+    Route.get('favourites/:id', 'Api/Logged/FavouritesController.show');
     //////////////////////////////////
     //////////////////////////////// Orders
-    Route.get('orders', 'Api/OrdersController.index');
-    Route.get('orders/:id', 'Api/OrdersController.show');
+    Route.get('orders', 'Api/Logged/OrdersController.index');
+    Route.get('orders/:id', 'Api/Logged/OrdersController.show');
+    Route.post('orders', 'Api/Logged/OrdersController.store')
+      .validator('Orders/Create');
     //////////////////////////////////
+    //////////// Comments
+    Route.post('posts/:id/comments', 'Api/Logged/CommentsController.store')
+      .validator('Comments/Create');
   }
 ).middleware(['auth']).prefix('api');
 

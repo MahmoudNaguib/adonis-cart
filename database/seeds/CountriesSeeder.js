@@ -25,12 +25,11 @@ class CountriesSeeder {
     await Database
       .raw('ALTER TABLE countries AUTO_INCREMENT = 1')
     ///////////////////////////////////////////////////////
-    let countriesData = require(Helpers.publicPath('countries.json'));
+    let countriesData = require(Helpers.publicPath('assets/data/countries.json'));
     if (countriesData) {
       for (let i = 0; i < countriesData.length; i++) {
         let object = new Model();
         object.iso = countriesData[i].code
-        object.dial_code = countriesData[i].dial_code
         object.title = countriesData[i].name
         object.created_by = 1
         await object.save()

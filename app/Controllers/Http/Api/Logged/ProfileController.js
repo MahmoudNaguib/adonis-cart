@@ -52,6 +52,26 @@ class ProfileController {
     }
     return response.status(400).json({message: "Failed to save"});
   }
+
+  async changePassword({request, response, auth}) {
+    let row = await Model.findOrFail(auth.user.id);
+    if (!await Hash.verify(request.input('old_password'), row.password)) {
+      return response.status(422).json({'old_password': 'Invalid password'})
+    }
+    row.password = request.input('password');
+    row.password_token=null;
+    if (row.save()) {
+      await auth.revokeTokensForUser(auth.user, null, true);
+      let token = await auth.generate(row);
+      if (token) {
+        return response.json({
+          message: "Update successfully",
+          token: token.token,
+        })
+      }
+    }
+    return response.status(400).json({message: "Failed to save"});
+  }
 }
 
 module.exports = ProfileController

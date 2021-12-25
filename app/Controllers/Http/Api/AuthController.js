@@ -67,22 +67,9 @@ class AuthController {
       ForgotPassword.handle(row);
       ///////////////
       return response.json({
-        message: "Your new password has been sent",
+        message: "An email sent with the instruction for changing your password",
       })
     }
-
-    /*let newPassword = (Env.get('APP_ENV') == 'production') ? Common.generateString(8) : Env.get('DEFAULT_PASSWORD');
-    row.password = newPassword;
-    if (row.save()) {
-      ///delete all token related to this user
-      await auth.revokeTokensForUser(row, null, true);
-      ///////////////Send email
-      ForgotPassword.handle(row, newPassword);
-      ///////////////
-      return response.json({
-        message: "Your new password has been sent",
-      })
-    }*/
     return response.status(400).json({message: "Failed to save"});
   }
 }
