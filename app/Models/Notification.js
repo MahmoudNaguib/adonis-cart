@@ -1,9 +1,20 @@
 'use strict'
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Model = use('Model')
+const Model = use('Model');
+const SendNotificationEmail = use('App/Jobs/SendNotificationEmail');
 
 class Notification extends Model {
+  static boot () {
+    super.boot()
+    this.addHook('afterCreate', async (row) => {
+      ///////////////Send email
+      if(row.send_email==1){
+        SendNotificationEmail.handle(row);
+      }
+      ///////////////
+    })
+  }
   user () {
     return this.belongsTo('App/Models/User')
   }

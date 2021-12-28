@@ -83,15 +83,25 @@ Route.group(() => {
       .validator('Addresses/Create');
     Route.put('addresses/:id', 'Api/Logged/AddressesController.update')
       .validator('Addresses/Edit');
+    Route.delete('addresses/:id', 'Api/Logged/AddressesController.destroy');
     //////////////////////////////////
     //////////////////////////////// Cart
     Route.get('cart', 'Api/Logged/CartController.index');
     Route.get('cart/:id', 'Api/Logged/CartController.show');
+    Route.post('cart', 'Api/Logged/CartController.store')
+      .validator('Cart/Create');
+    Route.put('cart/:id', 'Api/Logged/CartController.update')
+      .validator('Cart/Edit');
+    Route.delete('cart/:id', 'Api/Logged/CartController.destroy');
+
     //////////////////////////////////
     //////////////////////////////// Favourites
     Route.get('favourites', 'Api/Logged/FavouritesController.index');
     Route.get('favourites/pairs', 'Api/Logged/FavouritesController.pairs');
     Route.get('favourites/:id', 'Api/Logged/FavouritesController.show');
+    Route.post('favourites', 'Api/Logged/FavouritesController.store')
+      .validator('Favourites/Create');
+    Route.delete('favourites/:id', 'Api/Logged/FavouritesController.destroy');
     //////////////////////////////////
     //////////////////////////////// Orders
     Route.get('orders', 'Api/Logged/OrdersController.index');

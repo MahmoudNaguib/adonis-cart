@@ -34,8 +34,16 @@ class OrdersSeeder {
         for (let j = 0; j< 2; j++) {
           let address = await Address.query().where('created_by',users[i].id).orderByRaw("RAND()").first();
           let productsIds = await Product.query().active().select(['id']).orderByRaw("RAND()").limit(2).ids();
+          let products=[];
+          for (let i = 0; i < productsIds.length; i++) {
+              let product={
+                product_id:productsIds[i],
+                quantity:1
+              }
+              products.push(product);
+          }
           if(address){
-            let order=await Shopping.createOrder(users[i].id,address.id,productsIds,users[i].name,users[i].mobile);
+            let order=await Shopping.createOrder(users[i].id,address.id,products,users[i].name,users[i].mobile);
           }
         }
       }

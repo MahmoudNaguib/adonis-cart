@@ -4,9 +4,7 @@ const Common = use('App/Helpers/Common');
 class Create {
   get rules () {
     return {
-      address_id: 'required|integer',
-      contact_name:'required',
-      contact_mobile:'required'
+      product_id: 'required|integer',
     }
   }
   async fails (errorMessages) {

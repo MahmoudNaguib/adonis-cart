@@ -77,6 +77,18 @@ class AddressesController {
     }
     return response.status(400).json({message: "Failed to save"});
   }
+
+  async destroy({params, request, response, auth}) {
+    let row = await Model.query().own(auth).where('id', params.id).first();
+    if (!row) {
+      return response.status(404).json({'message': 'Page not found'})
+    }
+    if (await row.delete()) {
+      return response.json({
+        message: "Delete successfully",
+      })
+    }
+  }
 }
 
 

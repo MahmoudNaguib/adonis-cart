@@ -1,0 +1,3364 @@
+{
+	"info": {
+		"_postman_id": "a9fff806-0119-4342-bb28-d085509137bf",
+		"name": "Adonis-Cart",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"description": "Required|Email",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"description": "Required|Min:8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - data:{UserData},\n    - token:{token} // this token will sent in header Authorization:\"Bearer \"+{token}"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"description": "Required|Email",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/forgot-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"forgot-password"
+							]
+						},
+						"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{Message}}\","
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{$randomFirstName}} {{$randomLastName}}",
+									"description": "Required",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{$randomExampleEmail}}",
+									"description": "Required|Email",
+									"type": "text"
+								},
+								{
+									"key": "mobile",
+									"value": "01228277204",
+									"description": "Required",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"description": "Required|MIn:8|The same as password_confirmation",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "{{password}}",
+									"description": "Required|MIn:8|The same as password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "- Response codes\n    - 201: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (201)\n    - message:\"{{message}}\",\n    - data:{UserData},"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Guest",
+			"item": [
+				{
+					"name": "Configs",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/configs",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"configs"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Categories",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/categories",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"categories"
+									]
+								},
+								"description": "- Pagination field:page\n- Sort fields: order_field='id', order_value='ASC'   eg:?order_field=id&order_value=asc"
+							},
+							"response": []
+						},
+						{
+							"name": "Pairs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/categories/pairs",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"categories",
+										"pairs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/categories\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/categories/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"categories",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "Comments",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/posts\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/posts/{{id}}/comments",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{id}}",
+										"comments"
+									]
+								},
+								"description": "To sort Results: order_field'id', order_value'DESC'"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Posts",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/posts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"posts"
+									]
+								},
+								"description": "- Pagination field:page\n- Sort fields: order_field='id', order_value='ASC'   eg:?order_field=id&order_value=asc\n- Filter fields: section_id eg: ?section_id=1"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/posts\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/posts/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"products"
+									]
+								},
+								"description": "- Pagination field:page\n- Sort fields: order_field='id', order_value='ASC'   eg:?order_field=id&order_value=asc\n- Filter fields: section_id eg: ?category_id=7"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/products\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/products/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"products",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Sections",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/sections",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"sections"
+									]
+								},
+								"description": "- Pagination field:page\n- Sort fields: order_field='id', order_value='ASC'   eg:?order_field=id&order_value=asc"
+							},
+							"response": []
+						},
+						{
+							"name": "Pairs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/sections/pairs",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"sections",
+										"pairs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/sections\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    console.log(data.data[0].id);",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/sections/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"sections",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Logged",
+			"item": [
+				{
+					"name": "Addresses",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/addresses",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"addresses"
+									]
+								},
+								"description": "- Pagination field:page\n- Sort fields: order_field='id', order_value='ASC'   eg:?order_field=id&order_value=asc"
+							},
+							"response": []
+						},
+						{
+							"name": "Pairs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/addresses/pairs",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"addresses",
+										"pairs"
+									]
+								},
+								"description": "- Pagination field:page\n- Sort fields: order_field='id', order_value='ASC'   eg:?order_field=id&order_value=asc"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/addresses\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/addresses/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"addresses",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Home address {{$timestamp}}",
+											"description": "Required|min:3",
+											"type": "text"
+										},
+										{
+											"key": "country_id",
+											"value": "64",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "city",
+											"value": "city {{$timestamp}}",
+											"description": "Required|min:3",
+											"type": "text"
+										},
+										{
+											"key": "district",
+											"value": "district {{$timestamp}}",
+											"description": "Required|min:3",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "{{$randomStreetAddress}}",
+											"description": "Required|min:3",
+											"type": "text"
+										},
+										{
+											"key": "zip_code",
+											"value": "02202",
+											"description": "Optional",
+											"type": "text"
+										},
+										{
+											"key": "notes",
+											"value": "notes {{$timestamp}}",
+											"description": "Optional",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/addresses",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"addresses"
+									]
+								},
+								"description": "- Response codes\n    - 201: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (201)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Edit",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/addresses\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Home address updated {{$timestamp}}",
+											"description": "Required|min:3",
+											"type": "text"
+										},
+										{
+											"key": "country_id",
+											"value": "64",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "city",
+											"value": "city {{$timestamp}}",
+											"description": "Required|min:3",
+											"type": "text"
+										},
+										{
+											"key": "district",
+											"value": "district {{$timestamp}}",
+											"description": "Required|min:3",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "{{$randomStreetAddress}}",
+											"description": "Required|min:3",
+											"type": "text"
+										},
+										{
+											"key": "zip_code",
+											"value": "02202",
+											"description": "Optional",
+											"type": "text"
+										},
+										{
+											"key": "notes",
+											"value": "notes  {{$timestamp}}",
+											"description": "Optional",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/addresses/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"addresses",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/addresses\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/addresses/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"addresses",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n- Response (200)\n    - message:\"{{message}}\","
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/profile",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/profile/logout",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"profile",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "{{name}}",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "{{email}}",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "mobile",
+											"value": "01228277204",
+											"description": "Required|number",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"description": "Optional|image:png, jpg",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/profile",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"profile"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - data:{{data}},\n    - token:{token} // this token will sent in header Authorization:\"Bearer \"+{token}"
+							},
+							"response": []
+						},
+						{
+							"name": "Change password",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "old_password",
+											"value": "{{password}}",
+											"description": "Required|min:8",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"description": "Required|min:8|the same as password_confirmation",
+											"type": "text"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "{{password}}",
+											"description": "Required|min:8|the same as password",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/change-password",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"change-password"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - token:{token} // this token will sent in header Authorization:\"Bearer \"+{token}"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Notifications",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/notifications",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"notifications"
+									]
+								},
+								"description": "- Pagination field:page\n- Sort fields: order_field='id', order_value='ASC'   eg:?order_field=id&order_value=asc"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/notifications\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/notifications/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"notifications",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Cart",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/cart",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"cart"
+									]
+								},
+								"description": "- Pagination field:page\n- Sort fields: order_field='id', order_value='ASC'   eg:?order_field=id&order_value=asc"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/cart\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/cart/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/products\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "product_id",
+											"value": "{{id}}",
+											"description": "Required|min:3",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/cart",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"cart"
+									]
+								},
+								"description": "- Response codes\n    - 201: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (201)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Edit",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/cart\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "product_id",
+											"value": "1",
+											"description": "Required|min:3",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "1",
+											"description": "Optional",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/cart/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/cart\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/cart/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n- Response (200)\n    - message:\"{{message}}\","
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Favourites",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/favourites",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"favourites"
+									]
+								},
+								"description": "- Pagination field:page\n- Sort fields: order_field='id', order_value='ASC'   eg:?order_field=id&order_value=asc"
+							},
+							"response": []
+						},
+						{
+							"name": "Pairs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/favourites/pairs",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"favourites",
+										"pairs"
+									]
+								},
+								"description": "Pagination field:page\nSort fields: order_field='id', order_value='ASC'"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/favourites\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/favourites/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"favourites",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/products\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "product_id",
+											"value": "{{id}}",
+											"description": "Required|min:3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/favourites",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"favourites"
+									]
+								},
+								"description": "- Response codes\n    - 201: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (201)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/favourites\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/favourites/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"favourites",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n- Response (200)\n    - message:\"{{message}}\","
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Orders",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"orders"
+									]
+								},
+								"description": "- Pagination field:page\n- Sort fields: order_field='id', order_value='ASC'   eg:?order_field=id&order_value=asc"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/orders\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/orders/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"orders",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/addresses\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "address_id",
+											"value": "{{id}}",
+											"type": "text"
+										},
+										{
+											"key": "contact_name",
+											"value": "User name",
+											"type": "text"
+										},
+										{
+											"key": "contact_mobile",
+											"value": "01228277204",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"orders"
+									]
+								},
+								"description": "- Response codes\n    - 201: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (201)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "Create Comment",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/posts\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json'",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "content",
+											"value": "Post with id {{id}}, {{$randomLoremParagraph}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/posts/{{id}}/comments",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"posts",
+										"{{id}}",
+										"comments"
+									]
+								},
+								"description": "- Response codes\n    - 201: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (201)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.environment.get(\"url\")+\"/api/auth/login\",",
+							"    method: 'POST',",
+							"    header: 'Content-Type:application/json',",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({'email':pm.environment.get('email'), 'password':pm.environment.get('password')})",
+							"    }",
+							"}, function (err, res) {",
+							"    const data=res.json();",
+							"    pm.environment.set(\"token\", data.token);",
+							"    pm.request.headers.add({key: 'Authorization', value:\"Bearer \"+data.token})",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Categories",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/categories",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"categories"
+									]
+								},
+								"description": "Pagination: page_id, Filter parameters: section_id,\nTo sort Results: order_field'id', order_value'DESC'"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/categories\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/categories/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"categories",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "parent_id",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "Category test",
+											"description": "Required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "is_active",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/mahmoud/Downloads/images/posts/6.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/categories",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"categories"
+									]
+								},
+								"description": "- Response codes\n    - 201: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (201)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/categories\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "parent_id",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "Category title updated 2",
+											"description": "Required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "is_active",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/mahmoud/Downloads/images/posts/7.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/categories/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"categories",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/categories\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/categories/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"categories",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n- Response (200)\n    - message:\"{{message}}\","
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Sections",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/sections",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"sections"
+									]
+								},
+								"description": "Pagination: page_id, Filter parameters: section_id,\nTo sort Results: order_field'id', order_value'DESC'"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/sections\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/sections/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"sections",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Section test",
+											"description": "Required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "is_active",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/mahmoud/Downloads/images/posts/10.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/sections",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"sections"
+									]
+								},
+								"description": "- Response codes\n    - 201: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (201)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/sections\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "parent_id",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "Section title updated",
+											"description": "Required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "is_active",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/mahmoud/Downloads/images/posts/10.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/sections/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"sections",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/sections\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/sections/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"sections",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n- Response (200)\n    - message:\"{{message}}\","
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Posts",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/posts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"posts"
+									]
+								},
+								"description": "Pagination: page_id, Filter parameters: section_id,\nTo sort Results: order_field'id', order_value'DESC'"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/posts\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/posts/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"posts",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "section_id",
+											"value": "1",
+											"description": "required",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "{{$randomLoremSentence}}",
+											"description": "required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "{{$randomLoremParagraph}}",
+											"description": "required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "is_active",
+											"value": "1",
+											"description": "required",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/mahmoud/Downloads/images/posts/8.png"
+										},
+										{
+											"key": "tags[]",
+											"value": "tag 1",
+											"type": "text"
+										},
+										{
+											"key": "tags[]",
+											"value": "tag 2",
+											"type": "text"
+										},
+										{
+											"key": "meta_keywords",
+											"value": "tag 1, tag 2",
+											"type": "text"
+										},
+										{
+											"key": "meta_description",
+											"value": "{{$randomLoremSentence}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/posts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"posts"
+									]
+								},
+								"description": "- Response codes\n    - 201: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (201)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/posts\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "section_id",
+											"value": "1",
+											"description": "required",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "{{$randomLoremSentence}}",
+											"description": "required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "{{$randomLoremParagraph}}",
+											"description": "required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "is_active",
+											"value": "1",
+											"description": "required",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/mahmoud/Downloads/images/posts/10.png"
+										},
+										{
+											"key": "tags[]",
+											"value": "tag 2",
+											"type": "text"
+										},
+										{
+											"key": "tags[]",
+											"value": "tag 1",
+											"type": "text"
+										},
+										{
+											"key": "meta_keywords",
+											"value": "tag 1, tag 2",
+											"type": "text"
+										},
+										{
+											"key": "meta_description",
+											"value": "{{$randomLoremSentence}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/posts/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"posts",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/posts\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/posts/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"posts",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n- Response (200)\n    - message:\"{{message}}\","
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"products"
+									]
+								},
+								"description": "Pagination: page_id, Filter parameters: section_id,\nTo sort Results: order_field'id', order_value'DESC'"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/products\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/products/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"products",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "category_id",
+											"value": "11",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "Product test",
+											"description": "Required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "Product content",
+											"description": "Required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "is_active",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/mahmoud/Downloads/images/posts/8.png"
+										},
+										{
+											"key": "meta_keywords",
+											"value": "tag 1, tag 2",
+											"type": "text"
+										},
+										{
+											"key": "meta_description",
+											"value": "Product meta descriptiion",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"products"
+									]
+								},
+								"description": "- Response codes\n    - 201: Suucess //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (201)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/products\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "category_id",
+											"value": "11",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "Product title updated",
+											"description": "Required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "Product content updated",
+											"description": "Required|min:4",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "100",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "is_active",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/mahmoud/Desktop/images/0qqef33cki1624886629.jpg"
+										},
+										{
+											"key": "meta_keywords",
+											"value": "tag 1, tag 2",
+											"type": "text"
+										},
+										{
+											"key": "meta_description",
+											"value": "Product meta descriptiion",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/products/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"products",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/products\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/products/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"products",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n- Response (200)\n    - message:\"{{message}}\","
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Orders",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"orders"
+									]
+								},
+								"description": "Pagination: page_id, Filter parameters: created_by,\nTo sort Results: order_field'id', order_value'DESC'"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/orders\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/orders/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"orders",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/orders\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/orders/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"orders",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n- Response (200)\n    - message:\"{{message}}\","
+							},
+							"response": []
+						},
+						{
+							"name": "Update status",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/orders\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "status",
+											"value": "Confirmed",
+											"description": "Required|in:Pending,Confirmed,Cancelled,In-Progress,In-Shipment,Delivered,Returned",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/orders/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"orders",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/comments",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"comments"
+									]
+								},
+								"description": "Pagination: page_id, Filter parameters: post_id,\n To sort Results: order_field'id', order_value'DESC'"
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/comments\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/comments/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"comments",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/comments\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "is_active",
+											"value": "1",
+											"description": "Required",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/admin/comments/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"comments",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n    - 422: Validation error   //Always have message and errors object with the field key that has error\n    - 400: Bad Request //Always have message\n    - 403: Forbidden //Always have message\n- Response (200)\n    - message:\"{{message}}\",\n    - data:{{data}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: pm.environment.get(\"url\")+\"/api/admin/comments\",",
+											"    method: 'GET',",
+											"      header: {",
+											"        'Content-Type':'application/json',",
+											"        'Authorization':'Bearer '+pm.environment.get('token')",
+											"    },",
+											"}, function (err, res) {",
+											"    const data=res.json();",
+											"    pm.environment.set(\"id\",data.data[0].id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/admin/comments/{{id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"comments",
+										"{{id}}"
+									]
+								},
+								"description": "- Response codes\n    - 200: Suucess //Always have message\n    - 404: Not found // //Always have message\n- Response (200)\n    - message:\"{{message}}\","
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.environment.get(\"url\")+\"/api/auth/login\",",
+							"    method: 'POST',",
+							"    header: 'Content-Type:application/json',",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({'email':pm.environment.get('admin_email'), 'password':pm.environment.get('password')})",
+							"    }",
+							"}, function (err, res) {",
+							"    const data=res.json();",
+							"    pm.environment.set(\"token\", data.token);",
+							"    pm.request.headers.add({key: 'Authorization', value:\"Bearer \"+data.token})",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

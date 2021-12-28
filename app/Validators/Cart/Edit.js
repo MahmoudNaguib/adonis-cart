@@ -1,12 +1,11 @@
 'use strict'
 const Common = use('App/Helpers/Common');
 
-class Create {
+class Edit {
   get rules () {
     return {
-      address_id: 'required|integer',
-      contact_name:'required',
-      contact_mobile:'required'
+      product_id: 'required|integer',
+      quantity: 'required|integer',
     }
   }
   async fails (errorMessages) {
@@ -18,4 +17,4 @@ class Create {
   }
 }
 
-module.exports = Create
+module.exports = Edit

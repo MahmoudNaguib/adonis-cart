@@ -6,18 +6,17 @@ const Address = use('App/Models/Address');
 const Env = use('Env');
 
 class Shopping {
-  static async createOrder(userId, addressId, productsIds,contact_name,contact_mobile) {
+  static async createOrder(userId, addressId, products,contact_name,contact_mobile) {
     let user = await User.query().active().where('id',userId).first();
     user=user.toJSON();
     if(user){
-      let products = await Product.query().active().whereIn('id', productsIds).select(['id','category_id','title','price','image']).fetch();
-      products = products.toJSON();
-      if(products.length>1){
+      if(products.length>0){
         let total=0;
         let productList=[];
         for (let i = 0; i < products.length; i++) {
-          total+=products[i].price;
-          productList.push(products[i]);
+          let product=await Product.query().active().select(['id','category_id','title','price','image']).where('id',products[i].product_id).first();
+          total+=products[i].quantity*product.price;
+          productList.push(product.toJSON());
         }
         let address = await Address.query().with('country').where('id',addressId).first();
         address=address.toJSON();

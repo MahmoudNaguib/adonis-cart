@@ -1,0 +1,11 @@
+@include('emails/partials/header')
+
+<h2>New notification {{appName}} </h2>
+
+<h4> Hello {{ user.name }} </h2>
+<p>
+  {{row.content}}
+</p>
+
+
+@include('emails/partials/footer')
